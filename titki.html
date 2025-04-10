@@ -68,6 +68,29 @@
         button:hover {
             background-color: #367c39;
         }
+
+        #winner-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+            display: none; /* Скрыт по умолчанию */
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+            z-index: 1000; /* Чтобы перекрывал все */
+        }
+
+        #winner-message {
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -85,11 +108,17 @@
 
     </div>
 
+    <div id="winner-screen">
+        <div id="winner-message"></div>
+    </div>
+
     <script>
         const choices = document.querySelectorAll('.choice');
         const message = document.getElementById('message');
         const playerScoreSpan = document.getElementById('player-score');
         const computerScoreSpan = document.getElementById('computer-score');
+        const winnerScreen = document.getElementById('winner-screen');
+        const winnerMessage = document.getElementById('winner-message');
 
         let playerScore = 0;
         let computerScore = 0;
@@ -108,10 +137,20 @@
                 (playerChoice === 'ножницы' && computerChoice === 'бумага') ||
                 (playerChoice === 'бумага' && computerChoice === 'камень')
             ) {
-                playerScore++;  // Ошибка: playerScore не изменялась
+                playerScore++;
+                updateScore();
+                if (playerScore === 3) {
+                    showWinnerScreen("Вы победили!");
+                    return "Вы победили!";
+                }
                 return 'Вы выиграли!';
             } else {
-                computerScore++;  // Ошибка: computerScore не изменялась
+                computerScore++;
+                updateScore();
+                if (computerScore === 3) {
+                    showWinnerScreen("Компьютер победил!");
+                    return "Вы проиграли!";
+                }
                 return 'Вы проиграли!';
             }
         }
@@ -127,7 +166,12 @@
             const result = determineWinner(playerChoice, computerChoice);
 
             message.textContent = `Вы выбрали ${playerChoice}, компьютер выбрал ${computerChoice}. ${result}`;
-            updateScore();
+
+        }
+
+        function showWinnerScreen(winner) {
+            winnerMessage.textContent = winner;
+            winnerScreen.style.display = 'flex'; // Делаем видимым
         }
 
 
