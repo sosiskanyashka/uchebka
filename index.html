@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Праздники мира</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .search-section {
+            padding: 2rem;
+            background-color: var(--light);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .results-section {
+            padding: 2rem;
+        }
+        
+        .country-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .country-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .country-year {
+            font-size: 1.2rem;
+            color: var(--dark);
+            opacity: 0.8;
+        }
+        
+        .holidays-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .holiday-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .holiday-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .holiday-date {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            padding: 0.8rem 1rem;
+            font-weight: 600;
+        }
+        
+        .holiday-content {
+            padding: 1.5rem;
+        }
+        
+        .holiday-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .holiday-weekday {
+            display: inline-block;
+            background-color: var(--light);
+            color: var(--secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .error {
+            text-align: center;
+            padding: 1rem;
+            background-color: #ffebee;
+            color: var(--warning);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .examples {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .examples span {
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        
+        .examples strong {
+            color: var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .holidays-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Праздники мира</h1>
+            <p class="subtitle">Узнайте праздники любой страны по коду</p>
+        </header>
+        
+        <section class="search-section">
+            <form class="search-form" id="searchForm">
+                <div class="form-group">
+                    <label for="country">Код страны (2 буквы)</label>
+                    <input type="text" id="country" placeholder="Например: RU, US, DE" maxlength="2" required>
+                    <div class="examples">
+                        <span>Примеры:</span>
+                        <strong>RU</strong> (Россия),
+                        <strong>US</strong> (США),
+                        <strong>FR</strong> (Франция),
+                        <strong>JP</strong> (Япония)
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">Год</label>
+                    <select id="year">
+                        <option value="2024" selected>2024</option>
+                    </select>
+                </div>
+                
+                <button type="submit">Найти праздники</button>
+            </form>
+        </section>
+        
+        <section class="results-section" id="resultsSection">
+            <div id="countryInfo" class="country-info" style="display: none;">
+                <h2 class="country-name" id="countryName"></h2>
+                <p class="country-year" id="countryYear"></p>
+            </div>
+            
+            <div id="error" class="error" style="display: none;"></div>
+            
+            <div id="loading" class="loading" style="display: none;">
+                Загрузка данных о праздниках...
+            </div>
+            
+            <div class="holidays-grid" id="holidaysGrid"></div>
+        </section>
+        
+        
+    </div>
+    
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetchHolidays();
+        });
+        
+        const countryNames = {
+            'RU': 'Россия',
+            'US': 'США',
+            'DE': 'Германия',
+            'FR': 'Франция',
+            'JP': 'Япония',
+            'GB': 'Великобритания',
+            'IT': 'Италия',
+            'ES': 'Испания',
+            'CN': 'Китай',
+            'IN': 'Индия',
+            'BR': 'Бразилия',
+            'CA': 'Канада',
+            'AU': 'Австралия'
+        };
+        
+        async function fetchHolidays() {
+            const countryCode = document.getElementById('country').value.toUpperCase();
+            const year = document.getElementById('year').value;
+            const apiKey = 'e4e681bb-5383-4e55-970e-93f06f0a7016'; 
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('holidaysGrid').innerHTML = '';
+            document.getElementById('countryInfo').style.display = 'none';
+            
+            try {
+                const response = await fetch(`https://holidayapi.com/v1/holidays?country=${countryCode}&year=${year}&key=${apiKey}`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Неизвестная ошибка');
+                }
+                
+                if (data.holidays && data.holidays.length > 0) {
+                    document.getElementById('countryInfo').style.display = 'block';
+                    document.getElementById('countryName').textContent = 
+                        countryNames[countryCode] || countryCode;
+                    document.getElementById('countryYear').textContent = `Праздники в ${year} году`;
+                    
+                    displayHolidays(data.holidays);
+                } else {
+                    document.getElementById('error').style.display = 'block';
+                    document.getElementById('error').textContent = 
+                        'Не найдено праздников для выбранной страны и года';
+                }
+            } catch (error) {
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = 
+                    'Ошибка: ' + (error.message || 'Не удалось получить данные о праздниках');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        function displayHolidays(holidays) {
+            const holidaysGrid = document.getElementById('holidaysGrid');
+            
+            holidays.forEach(holiday => {
+                const holidayDate = new Date(holiday.date);
+                const options = { day: 'numeric', month: 'long' };
+                const formattedDate = holidayDate.toLocaleDateString('ru-RU', options);
+                
+                const holidayCard = document.createElement('div');
+                holidayCard.className = 'holiday-card';
+                holidayCard.innerHTML = `
+                    <div class="holiday-date">${formattedDate}</div>
+                    <div class="holiday-content">
+                        <h3 class="holiday-name">${holiday.name}</h3>
+                        <span class="holiday-weekday">${holiday.weekday.date.name}</span>
+                    </div>
+                `;
+                holidaysGrid.appendChild(holidayCard);
+            });
+        }
+    </script>
+</body>
+</html>
