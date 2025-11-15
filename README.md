@@ -19,4 +19,11 @@
 
 
 ### ER диаграмма бд
-![Главная страница](https://user-images.githubusercontent.com/1234567/example1.png)
+![Описание](./lib/2025-11-15_20-01-41.png)
+
+## Технологии
+
+- **MAMP**
+- **php**
+- **MySQL** 
+- **HTML/CSS** 
